@@ -3,6 +3,11 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Star } from 'lucide-react';
 
 function Home() {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="home-section">
       <div className="home-content">
@@ -28,11 +33,17 @@ function Home() {
           </p>
           
           <div className="home-buttons">
-            <button className="btn-primary">
+            <button 
+              className="btn-primary"
+              onClick={() => scrollToSection('products')}
+            >
               Explore Products
               <ArrowRight size={18} />
             </button>
-            <button className="btn-secondary">
+            <button 
+              className="btn-secondary"
+              onClick={() => scrollToSection('about')}
+            >
               Our Story
             </button>
           </div>

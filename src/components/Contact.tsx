@@ -38,15 +38,15 @@ function Contact() {
     },
     {
       title: "Official Website",
-      content: "official site of zelion cricket.",
+      content: "Visit our official site for the complete Zelion experience.",
       linkText: "zelioncricket.com",
-      link: "site:zelioncricket.com",
+      link: "https://zelioncricket.com/",
       icon: <UploadCloud size={24} />,
       color: "from-red-500 to-red-500"
     },
     {
-    title: "Chat With Us",
-      content: "Stay connect for more updates.",
+      title: "Chat With Us",
+      content: "Stay connected for more updates and instant support.",
       linkText: "@zelioncricket",
       link: "https://web.whatsapp.com",
       icon: <MessageCircle size={24} />,

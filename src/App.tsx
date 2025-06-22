@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
 import Products from './components/Products';
+import Offers from './components/Offers';
 import ScrollVelocity from './components/ScrollVelocity';
 import Contact from './components/Contact';
 import './styles/beam-theme.css';
@@ -22,6 +23,10 @@ function App() {
 
       <section id="products">
         <Products />
+      </section>
+
+      <section id="offers">
+        <Offers />
       </section>
 
       <ScrollVelocity

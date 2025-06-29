@@ -4,11 +4,14 @@ interface User {
   id: string;
   name: string;
   email: string;
+  avatar?: string;
+  provider?: 'email' | 'google';
 }
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
+  loginWithGoogle: () => Promise<boolean>;
   signup: (name: string, email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
@@ -31,7 +34,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const mockUser: User = {
         id: '1',
         name: email.split('@')[0],
-        email: email
+        email: email,
+        provider: 'email'
       };
       setUser(mockUser);
       setIsLoading(false);
@@ -40,6 +44,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     
     setIsLoading(false);
     return false;
+  };
+
+  const loginWithGoogle = async (): Promise<boolean> => {
+    setIsLoading(true);
+    
+    try {
+      // Simulate Google OAuth flow
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Mock Google user data
+      const mockGoogleUser: User = {
+        id: 'google_' + Math.random().toString(36).substr(2, 9),
+        name: 'Cricket Enthusiast',
+        email: 'user@gmail.com',
+        avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150',
+        provider: 'google'
+      };
+      
+      setUser(mockGoogleUser);
+      setIsLoading(false);
+      return true;
+    } catch (error) {
+      setIsLoading(false);
+      return false;
+    }
   };
 
   const signup = async (name: string, email: string, password: string): Promise<boolean> => {
@@ -53,7 +82,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const mockUser: User = {
         id: '1',
         name: name,
-        email: email
+        email: email,
+        provider: 'email'
       };
       setUser(mockUser);
       setIsLoading(false);
@@ -72,6 +102,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     <AuthContext.Provider value={{
       user,
       login,
+      loginWithGoogle,
       signup,
       logout,
       isLoading

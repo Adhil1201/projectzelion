@@ -71,6 +71,13 @@ function Navbar() {
             {/* Auth Buttons */}
             {user ? (
               <div className="user-menu">
+                {user.avatar && (
+                  <img 
+                    src={user.avatar} 
+                    alt={user.name}
+                    className="user-avatar"
+                  />
+                )}
                 <span className="user-name">Hi, {user.name}</span>
                 <button 
                   className="nav-action-btn logout-btn"

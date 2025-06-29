@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Star, Award, Shield, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Star, Award, Shield, Zap, ShoppingCart } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { products } from '../data/products';
 
 interface CarouselSlide {
   id: number;
@@ -10,6 +12,7 @@ interface CarouselSlide {
   badge: string;
   features: string[];
   price: string;
+  productId: string;
 }
 
 const slides: CarouselSlide[] = [
@@ -17,10 +20,11 @@ const slides: CarouselSlide[] = [
     id: 1,
     title: "Elite Pro Cricket Bat",
     description: "Handcrafted from premium English willow, this bat delivers exceptional power and precision. Trusted by international players for its perfect balance and superior performance.",
-    image: "https://images.pexels.com/photos/3657154/pexels-photo-3657154.jpeg/",
+    image: "https://images.pexels.com/photos/3657154/pexels-photo-3657154.jpeg",
     badge: "Best Seller",
     features: ["English Willow", "Professional Grade", "Hand-Finished"],
-    price: "₹15,999"
+    price: "₹15,999",
+    productId: "bat-1"
   },
   {
     id: 2,
@@ -29,22 +33,25 @@ const slides: CarouselSlide[] = [
     image: "https://images.pexels.com/photos/28759016/pexels-photo-28759016.jpeg",
     badge: "Premium",
     features: ["Lightweight Design", "Superior Protection", "Moisture-Wicking"],
-    price: "₹8,999"
+    price: "₹8,999",
+    productId: "equipment-1"
   },
   {
     id: 3,
     title: "Complete Cricket Kit",
     description: "Everything you need to dominate the field. This comprehensive kit includes our signature bat, protective gear, and premium accessories for the serious cricketer.",
-    image: "https://images.pexels.com/photos/3800517/pexels-photo-3800517.jpeg",
+    image: "https://tse3.mm.bing.net/th/id/OIP.8q3VPTBSaf3Q7qmM3Uv9fgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
     badge: "Complete Set",
     features: ["Full Equipment", "Professional Quality", "Travel Case Included"],
-    price: "₹35,999"
+    price: "₹25,999",
+    productId: "kit-1"
   }
 ];
 
 function Carousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -69,6 +76,14 @@ function Carousel() {
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
     setIsAutoPlaying(false);
+  };
+
+  const handleAddToCart = () => {
+    const currentSlideData = slides[currentSlide];
+    const product = products.find(p => p.id === currentSlideData.productId);
+    if (product) {
+      addToCart(product);
+    }
   };
 
   return (
@@ -110,7 +125,8 @@ function Carousel() {
                 
                 <div className="slide-footer">
                   <span className="slide-price">{slides[currentSlide].price}</span>
-                  <button className="slide-button">
+                  <button className="slide-button" onClick={handleAddToCart}>
+                    <ShoppingCart size={18} />
                     Add to Cart
                   </button>
                 </div>

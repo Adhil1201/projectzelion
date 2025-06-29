@@ -23,3 +23,13 @@ export interface CartState {
   total: number;
   itemCount: number;
 }
+
+export interface WishlistItem {
+  product: Product;
+  addedAt: Date;
+}
+
+export interface WishlistState {
+  items: WishlistItem[];
+  itemCount: number;
+}

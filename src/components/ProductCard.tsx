@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ShoppingCart, Star, Heart, Eye } from 'lucide-react';
 import { Product } from '../types/Product';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 
 interface ProductCardProps {
   product: Product;
@@ -11,9 +12,18 @@ interface ProductCardProps {
 
 function ProductCard({ product, onQuickView }: ProductCardProps) {
   const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
 
   const handleAddToCart = () => {
     addToCart(product);
+  };
+
+  const handleWishlistToggle = () => {
+    if (isInWishlist(product.id)) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
   };
 
   return (
@@ -42,7 +52,10 @@ function ProductCard({ product, onQuickView }: ProductCardProps) {
           >
             <Eye size={18} />
           </button>
-          <button className="product-action-btn">
+          <button 
+            className={`product-action-btn ${isInWishlist(product.id) ? 'wishlist-active' : ''}`}
+            onClick={handleWishlistToggle}
+          >
             <Heart size={18} />
           </button>
         </div>

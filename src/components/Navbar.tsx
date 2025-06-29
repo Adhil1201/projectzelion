@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ShoppingCart, User, LogOut } from 'lucide-react';
+import { Menu, X, ShoppingCart, User, LogOut, Heart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
 import Cart from './Cart';
+import Wishlist from './Wishlist';
 import AuthModal from './AuthModal';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
-  const { state } = useCart();
+  const { state: cartState } = useCart();
+  const { state: wishlistState } = useWishlist();
   const { user, logout } = useAuth();
 
   useEffect(() => {
@@ -57,14 +61,25 @@ function Navbar() {
           </ul>
 
           <div className="nav-actions">
+            {/* Wishlist Button */}
+            <button 
+              className="nav-action-btn wishlist-btn"
+              onClick={() => setIsWishlistOpen(true)}
+            >
+              <Heart size={20} />
+              {wishlistState.itemCount > 0 && (
+                <span className="cart-badge">{wishlistState.itemCount}</span>
+              )}
+            </button>
+
             {/* Cart Button */}
             <button 
               className="nav-action-btn cart-btn"
               onClick={() => setIsCartOpen(true)}
             >
               <ShoppingCart size={20} />
-              {state.itemCount > 0 && (
-                <span className="cart-badge">{state.itemCount}</span>
+              {cartState.itemCount > 0 && (
+                <span className="cart-badge">{cartState.itemCount}</span>
               )}
             </button>
 
@@ -116,6 +131,9 @@ function Navbar() {
 
       {/* Cart Sidebar */}
       <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+
+      {/* Wishlist Sidebar */}
+      <Wishlist isOpen={isWishlistOpen} onClose={() => setIsWishlistOpen(false)} />
 
       {/* Auth Modal */}
       <AuthModal 

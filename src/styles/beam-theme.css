@@ -31,6 +31,121 @@ body {
   background: var(--background);
 }
 
+/* Auth Page Styles */
+.auth-page {
+  min-height: 100vh;
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.auth-page-container {
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-page-content {
+  background: var(--glass);
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.auth-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.back-btn {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: var(--primary-green);
+  color: var(--primary-green);
+}
+
+.auth-page-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.auth-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.auth-logo-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary-green), var(--primary-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auth-form-container {
+  width: 100%;
+}
+
+.auth-form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.auth-page-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 /* Navbar Styles */
 .navbar {
   position: fixed;
@@ -1068,64 +1183,6 @@ body {
   color: #ef4444;
 }
 
-/* Auth Modal Styles */
-.auth-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.auth-modal {
-  background: var(--surface);
-  border-radius: 16px;
-  border: 1px solid var(--glass-border);
-  width: 100%;
-  max-width: 400px;
-  margin: 2rem;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.auth-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2rem 2rem 1rem;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.auth-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.auth-close-btn {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.auth-close-btn:hover {
-  background: var(--glass);
-  color: var(--text-primary);
-}
-
-.auth-form {
-  padding: 2rem;
-}
-
 /* Google Login Button */
 .google-login-btn {
   width: 100%;
@@ -1176,7 +1233,7 @@ body {
 }
 
 .auth-divider span {
-  background: var(--surface);
+  background: var(--glass);
   padding: 0 1rem;
   font-size: 0.875rem;
 }
@@ -1280,7 +1337,7 @@ body {
 }
 
 .auth-footer {
-  padding: 1rem 2rem 2rem;
+  padding: 1rem 0;
   text-align: center;
   color: var(--text-secondary);
 }
@@ -2353,6 +2410,18 @@ body {
   .cart-sidebar {
     max-width: 100%;
   }
+
+  .auth-page {
+    padding: 1rem;
+  }
+
+  .auth-page-content {
+    padding: 1.5rem;
+  }
+
+  .auth-page-title {
+    font-size: 1.75rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2411,15 +2480,19 @@ body {
     font-size: 1.5rem;
   }
 
-  .auth-modal {
-    margin: 1rem;
-  }
-
   .cart-items {
     padding: 1rem;
   }
 
   .cart-summary {
     padding: 1.5rem;
+  }
+
+  .auth-page-content {
+    padding: 1rem;
+  }
+
+  .auth-page-title {
+    font-size: 1.5rem;
   }
 }

@@ -5,15 +5,17 @@ import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
 import Cart from './Cart';
 import Wishlist from './Wishlist';
-import AuthModal from './AuthModal';
 
-function Navbar() {
+interface NavbarProps {
+  onShowLogin: () => void;
+  onShowSignup: () => void;
+}
+
+function Navbar({ onShowLogin, onShowSignup }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
   const { state: cartState } = useCart();
   const { state: wishlistState } = useWishlist();
@@ -31,11 +33,6 @@ function Navbar() {
     const element = document.getElementById(sectionId);
     element?.scrollIntoView({ behavior: 'smooth' });
     setIsOpen(false);
-  };
-
-  const handleAuthClick = (mode: 'login' | 'signup') => {
-    setAuthMode(mode);
-    setIsAuthModalOpen(true);
   };
 
   const handleLogout = () => {
@@ -105,14 +102,14 @@ function Navbar() {
               <div className="auth-buttons">
                 <button 
                   className="nav-action-btn"
-                  onClick={() => handleAuthClick('login')}
+                  onClick={onShowLogin}
                 >
                   <User size={20} />
                   Login
                 </button>
                 <button 
                   className="nav-action-btn signup-btn"
-                  onClick={() => handleAuthClick('signup')}
+                  onClick={onShowSignup}
                 >
                   Sign Up
                 </button>
@@ -134,13 +131,6 @@ function Navbar() {
 
       {/* Wishlist Sidebar */}
       <Wishlist isOpen={isWishlistOpen} onClose={() => setIsWishlistOpen(false)} />
-
-      {/* Auth Modal */}
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)}
-        initialMode={authMode}
-      />
     </>
   );
 }

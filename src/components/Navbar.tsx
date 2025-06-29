@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ShoppingCart, User, LogOut } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import Cart from './Cart';
+import AuthModal from './AuthModal';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+
+  const { state } = useCart();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,30 +29,94 @@ function Navbar() {
     setIsOpen(false);
   };
 
-  return (
-    <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
-      <div className="navbar-container">
-        <div className="logo-container">
-          <img src="/images/favicon-32x32.png" alt="Zelion Logo" className="nav-logo" />
-          <span className="logo-text">ZELION</span>
-        </div>
-        
-        <ul className={`nav-links ${isOpen ? 'nav-links-open' : ''}`}>
-          <li><button onClick={() => scrollToSection('home')}>Home</button></li>
-          <li><button onClick={() => scrollToSection('about')}>About</button></li>
-          <li><button onClick={() => scrollToSection('products')}>Products</button></li>
-          <li><button onClick={() => scrollToSection('offers')}>Offers</button></li>
-          <li><button onClick={() => scrollToSection('contact')}>Contact</button></li>
-        </ul>
+  const handleAuthClick = (mode: 'login' | 'signup') => {
+    setAuthMode(mode);
+    setIsAuthModalOpen(true);
+  };
 
-        <button 
-          className="menu-toggle"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-    </nav>
+  const handleLogout = () => {
+    logout();
+  };
+
+  return (
+    <>
+      <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
+        <div className="navbar-container">
+          <div className="logo-container">
+            <img src="/images/favicon-32x32.png" alt="Zelion Logo" className="nav-logo" />
+            <span className="logo-text">ZELION</span>
+          </div>
+          
+          <ul className={`nav-links ${isOpen ? 'nav-links-open' : ''}`}>
+            <li><button onClick={() => scrollToSection('home')}>Home</button></li>
+            <li><button onClick={() => scrollToSection('about')}>About</button></li>
+            <li><button onClick={() => scrollToSection('products')}>Products</button></li>
+            <li><button onClick={() => scrollToSection('shop')}>Shop</button></li>
+            <li><button onClick={() => scrollToSection('offers')}>Offers</button></li>
+            <li><button onClick={() => scrollToSection('contact')}>Contact</button></li>
+          </ul>
+
+          <div className="nav-actions">
+            {/* Cart Button */}
+            <button 
+              className="nav-action-btn cart-btn"
+              onClick={() => setIsCartOpen(true)}
+            >
+              <ShoppingCart size={20} />
+              {state.itemCount > 0 && (
+                <span className="cart-badge">{state.itemCount}</span>
+              )}
+            </button>
+
+            {/* Auth Buttons */}
+            {user ? (
+              <div className="user-menu">
+                <span className="user-name">Hi, {user.name}</span>
+                <button 
+                  className="nav-action-btn logout-btn"
+                  onClick={handleLogout}
+                >
+                  <LogOut size={20} />
+                </button>
+              </div>
+            ) : (
+              <div className="auth-buttons">
+                <button 
+                  className="nav-action-btn"
+                  onClick={() => handleAuthClick('login')}
+                >
+                  <User size={20} />
+                  Login
+                </button>
+                <button 
+                  className="nav-action-btn signup-btn"
+                  onClick={() => handleAuthClick('signup')}
+                >
+                  Sign Up
+                </button>
+              </div>
+            )}
+          </div>
+
+          <button 
+            className="menu-toggle"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Cart Sidebar */}
+      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)}
+        initialMode={authMode}
+      />
+    </>
   );
 }
 
